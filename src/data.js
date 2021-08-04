@@ -8,7 +8,8 @@ export const DATA = [
         }
     },
     {
-        title: 'Bean to Bar'
+        title: 'Bean to Bar',
+        address: {}
     },
     {
         title: 'Farm to Barn',

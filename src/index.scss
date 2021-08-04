@@ -1,29 +1,87 @@
 $ticket: #fffec4;
+$ticket-width: 640px;
+$font-size-small: 12px;
+$font-size-default: 16px;
+$font-size-large: 24px;
+$font-size-xtra-large: 48px;
+$border-width: 1px;
+$border-color: #0f0f0f;
+$red: #e84343;
+
+@import url('https://fonts.googleapis.com/css2?family=Ultra&display=swap');
 
 body {
-    font: 14px "Century Gothic", Futura, sans-serif;
+    font: $font-size-default Arial, sans-serif;
     margin: 20px;
 }
 
+.app-title {
+    font-family: 'Ultra';
+    font-size: $font-size-xtra-large;
+    margin: 0 auto;
+    text-align: center;
+    background-color: $red;
+    padding: 8px;
+}
+
+.tickets {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+}
+
 .ticket {
-    margin: 16px 0;
+    margin: 16px auto;
     padding: 16px;
-    background-color: $ticket;
-    box-shadow: 0px 2px 4px #dedede;
+    background-color: #f2f2f2;
+    width: $ticket-width;
+    // box-shadow: 0px 2px 8px #dedede;
+
+    .row {
+        display: flex;
+        width: 100%;
+    }
     
     .field {
-        border: 1px solid black;
+        border: $border-width solid $border-color;
+        box-sizing: border-box;
         padding: 8px;
+        flex-grow: 1;
+
+        &--bold {
+            font-weight: bold;
+        }
     }
 
     .fieldLabel {
         text-transform: uppercase;
-        font-size: 10px;
+        font-size: $font-size-small;
         display: block;
     }
 
     .citationNumber {
-        color: red;
-        font-size: 24px;
+        color: $red;
+        font-size: $font-size-large;
+    }
+
+    .signature {
+        content: '';
+        height: 24px;
+        border-bottom: $border-width solid $border-color;
+    }
+
+}
+
+.barcode {
+    display: inline-block;
+    text-align: center;
+    .stripes {
+        height: 84px;
+        display: flex;
+    }
+
+    .barcodeNumber__number {
+        padding: 0 12px;
+        letter-spacing: 2px;
     }
 }
