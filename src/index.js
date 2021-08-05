@@ -13,6 +13,7 @@ const getRandom = function(min, max) {
   return Math.random() * (max - min) + min;
 }
 
+
 class Barcode extends React.Component {
   generateStripes() {
     const barcodeWidth = 240;
@@ -23,7 +24,7 @@ class Barcode extends React.Component {
     let sum = 0;
     let stripeIndex = 0;
     while (sum < barcodeWidth) {
-      const stripeWidth = getRandom(1, 5);
+      const stripeWidth = getRandom(1, 6);
       const stripeColor = stripeIndex % 2 ? stripeColors[0] : stripeColors[1];
 
       stripes.push(<span className="stripe" style={{width: stripeWidth + 'px', backgroundColor: stripeColor}}></span>);
@@ -58,7 +59,7 @@ class Barcode extends React.Component {
 class FieldLabel extends React.Component {
   render() {
     return (
-      <span class="fieldLabel">{this.props.text}</span>
+      <span className="fieldLabel">{this.props.text}</span>
     )
   }
 }
@@ -90,17 +91,16 @@ class TicketDate extends React.Component {
       <div className="date">
         <FieldLabel text="Date of violation"/>
         <span className="year">{this.props.date ? this.props.date.getFullYear() : ' '}</span>
-        / <span className="month">{this.props.date ? pad(this.props.date.getMonth() + 1, 2) : ' '}</span>
-        / <span className="day">{this.props.date? pad(this.props.date.getDate(), 2) : ' '}</span>
+        /<span className="month">{this.props.date ? pad(this.props.date.getMonth() + 1, 2) : ' '}</span>
+        /<span className="day">{this.props.date? pad(this.props.date.getDate(), 2) : ' '}</span>
       </div>
     )
   }
 }
 
 class Ticket extends React.Component {
-  
     getCitationNumber(num) {
-      return pad(num, 4);
+      return pad(num, 5);
     }
 
     render() {
@@ -110,26 +110,16 @@ class Ticket extends React.Component {
                 <div className="field">
                   <Barcode />
                 </div>
-              </div>
-              <div className="row">
-                <div className="field field--bold">
-                  <div className="title">BULLSH*T CITATION</div>
-                </div>
-                <div className="field field--bold">
+                <div className="field field--bold field--no-grow">
+                  <FieldLabel text="Citation No." />
                   <div className="citationNumber">
-                    <FieldLabel text="Citation No." />
-                    #{this.getCitationNumber(this.props.id)}
+                    C-{this.getCitationNumber(this.props.id)}
                   </div>
                 </div>
               </div>
               <div className="row">
                 <div className="field field--bold">
-                  <FieldLabel text="Your presence is requested at the Department of Bullsh*t" />
-                </div>
-              </div>
-              <div className="row">
-                <div className="field">
-                <FieldLabel text="Offense" />
+                  <FieldLabel text="Bullsh*t Citation" />
                   <div className="offense">
                     "{this.props.data.title}"
                   </div>
@@ -142,14 +132,33 @@ class Ticket extends React.Component {
                     {this.props.data.name}
                   </div>
                 </div>
-              </div>
-              <div className="row">
                 <div className="field">
                   <TicketDate date={this.props.data.date} />
                 </div>
               </div>
               <div className="row">
                 <TicketAddress address={this.props.data.address} />
+              </div>
+              <div className="row">
+                <div className="field">
+                <FieldLabel text="Severity"></FieldLabel>
+                  <div>
+                    <input type="radio" id="criminal" name="severity" value="criminal"/>
+                    <label for="criminal">Criminal violation</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="major-infraction" name="severity" value="major-infraction"/>
+                    <label for="major-infraction">Infraction (major)</label>
+                  </div>
+                  <div>
+                    <input type="radio" id="minor-infraction" name="severity" value="minor-infraction"/>
+                    <label for="minor-infraction">Infraction (minor)</label>
+                  </div>
+                </div>
+                <div className="field">
+                  <FieldLabel text="Penalty Assessed"></FieldLabel>
+                  ${getRandom(100, 10000).toFixed(2)}
+                </div>
               </div>
               <div className="row">
                   <div className="field">
@@ -164,17 +173,52 @@ class Ticket extends React.Component {
 }
   
   class BsApp extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        ticketIndex: 0
+      };
+
+      this.prevTicket = this.prevTicket.bind(this);
+      this.nextTicket = this.nextTicket.bind(this);
+    }
+
+    prevTicket() {
+      const ticketIndex = this.state.ticketIndex;
+
+      if (ticketIndex > 0) {
+        this.setState({
+          ticketIndex: ticketIndex - 1
+        });
+      }
+    }
+
+    nextTicket() {
+      const ticketIndex = this.state.ticketIndex;
+
+      if (ticketIndex + 1 < DATA.length) {
+        this.setState({
+          ticketIndex: ticketIndex + 1
+        });
+      }
+    }
+
     render() {
-      const tickets = DATA.map((item, i) => 
-          <Ticket data={item} id={i} key={`ticket-${i}`} />
-      );
+      const ticketIndex = this.state.ticketIndex;
+      const ticketData = DATA[ticketIndex];
 
       return (
         <div className="app">
-          <div className="app-title">BULLSH*T TO BULLSH*T</div>
-          <ol className="tickets">
-            {tickets}
-          </ol>
+          <div className="app-title">
+            BULLSH*T TO BULLSH*T
+          </div>
+          <div className="tickets">
+            <Ticket data={ticketData} id={ticketIndex} />
+          </div>
+          <div className="navigation">
+            <button className="navigationButton" onClick={this.prevTicket}>Previous</button>
+            <button className="navigationButton" onClick={this.nextTicket}>Next</button>
+          </div>
         </div>
       );
     }

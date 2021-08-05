@@ -2,6 +2,7 @@ export const DATA = [
     {
         title: 'Grain to Glass',
         name: 'Eimverk Distillery',
+        date: new Date(2021, 6, 10),
         address: {
             city: 'Reykjavik',
             country: 'Iceland'
@@ -32,6 +33,7 @@ export const DATA = [
     },
     {
         title: 'Farm to Barrel',
+        name: 'Almanac Beer Co.',
         date: new Date(2021, 6, 28),
         address: {
             city: 'Mountain View',

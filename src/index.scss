@@ -2,13 +2,16 @@ $ticket: #fffec4;
 $ticket-width: 640px;
 $font-size-small: 12px;
 $font-size-default: 16px;
-$font-size-large: 24px;
+$font-size-large: 32px;
 $font-size-xtra-large: 48px;
 $border-width: 1px;
 $border-color: #0f0f0f;
 $red: #e84343;
+$red-hover: #ab2424;
 
 @import url('https://fonts.googleapis.com/css2?family=Ultra&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap');
+
 
 body {
     font: $font-size-default Arial, sans-serif;
@@ -34,8 +37,7 @@ body {
     margin: 16px auto;
     padding: 16px;
     background-color: #f2f2f2;
-    width: $ticket-width;
-    // box-shadow: 0px 2px 8px #dedede;
+    max-width: $ticket-width;
 
     .row {
         display: flex;
@@ -43,6 +45,7 @@ body {
     }
     
     .field {
+        font-family: 'DM Mono', monospace;
         border: $border-width solid $border-color;
         box-sizing: border-box;
         padding: 8px;
@@ -51,17 +54,25 @@ body {
         &--bold {
             font-weight: bold;
         }
+
+        &--no-grow {
+            flex-grow: 0;
+        }
     }
 
     .fieldLabel {
+        margin-bottom: 4px;
         text-transform: uppercase;
         font-size: $font-size-small;
         display: block;
     }
 
+    .offense {
+        font-size: $font-size-large;
+    }
+
     .citationNumber {
         color: $red;
-        font-size: $font-size-large;
     }
 
     .signature {
@@ -72,16 +83,51 @@ body {
 
 }
 
+.date {
+    .year, .month, .day {
+        text-align: center;
+        display: inline-block;
+        border-bottom: 1px solid $border-color;
+        margin: 0 4px;
+    }
+    .year {
+        margin-left: 0;
+        min-width: 64px;
+    }
+    .month, .day {
+        min-width: 40px;
+    }
+}
+
 .barcode {
     display: inline-block;
     text-align: center;
     .stripes {
-        height: 84px;
+        height: 64px;
         display: flex;
     }
 
     .barcodeNumber__number {
         padding: 0 12px;
         letter-spacing: 2px;
+    }
+}
+
+.navigation {
+    text-align: right;
+}
+.navigationButton {
+    font-family: 'Ultra';
+    border: none;
+    box-shadow: none;
+    background-color: $red;
+    font-size: $font-size-large;
+    padding: 4px 12px;
+    margin: 0px 8px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $red-hover;
+        transition: background-color .25s;
     }
 }
