@@ -1,18 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { DATA } from './data.js';
+import { pad, getRandom } from './utils.js';
 import './index.scss';
-
-const pad = (num, digits) => {
-  num = num.toString();
-  while (num.length < digits) num = "0" + num;
-  return num;
-}
-
-const getRandom = function(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
 
 class Barcode extends React.Component {
   generateStripes() {
@@ -144,15 +134,15 @@ class Ticket extends React.Component {
                 <FieldLabel text="Severity"></FieldLabel>
                   <div>
                     <input type="radio" id="criminal" name="severity" value="criminal"/>
-                    <label for="criminal">Criminal violation</label>
+                    <label htmlFor="criminal">Criminal violation</label>
                   </div>
                   <div>
                     <input type="radio" id="major-infraction" name="severity" value="major-infraction"/>
-                    <label for="major-infraction">Infraction (major)</label>
+                    <label htmlFor="major-infraction">Infraction (major)</label>
                   </div>
                   <div>
                     <input type="radio" id="minor-infraction" name="severity" value="minor-infraction"/>
-                    <label for="minor-infraction">Infraction (minor)</label>
+                    <label htmlFor="minor-infraction">Infraction (minor)</label>
                   </div>
                 </div>
                 <div className="field">
@@ -216,8 +206,8 @@ class Ticket extends React.Component {
             <Ticket data={ticketData} id={ticketIndex} />
           </div>
           <div className="navigation">
-            <button className="navigationButton" onClick={this.prevTicket}>Previous</button>
-            <button className="navigationButton" onClick={this.nextTicket}>Next</button>
+            <button className="navigationButton" onClick={this.prevTicket} disabled={ticketIndex === 0}>Previous</button>
+            <button className="navigationButton" onClick={this.nextTicket} disabled={ticketIndex === DATA.length - 1}>Next</button>
           </div>
         </div>
       );

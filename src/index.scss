@@ -1,4 +1,4 @@
-$ticket: #fffec4;
+$ticket: #f2f2f2;
 $ticket-width: 640px;
 $font-size-small: 12px;
 $font-size-default: 16px;
@@ -15,7 +15,6 @@ $red-hover: #ab2424;
 
 body {
     font: $font-size-default Arial, sans-serif;
-    margin: 20px;
 }
 
 .app-title {
@@ -36,7 +35,7 @@ body {
 .ticket {
     margin: 16px auto;
     padding: 16px;
-    background-color: #f2f2f2;
+    background-color: $ticket;
     max-width: $ticket-width;
 
     .row {
@@ -69,6 +68,7 @@ body {
 
     .offense {
         font-size: $font-size-large;
+        text-align: center;
     }
 
     .citationNumber {
@@ -114,7 +114,7 @@ body {
 }
 
 .navigation {
-    text-align: right;
+    text-align: center;
 }
 .navigationButton {
     font-family: 'Ultra';
@@ -129,5 +129,11 @@ body {
     &:hover {
         background-color: $red-hover;
         transition: background-color .25s;
+    }
+
+    &:disabled {
+        background-color: #dedede;
+        transition: none;
+        cursor: default;
     }
 }
