@@ -1,6 +1,7 @@
 $ticket: #f2f2f2;
 $ticket-width: 640px;
 $log-max-width: 800px;
+$font-size-xtra-small: 10px;
 $font-size-small: 12px;
 $font-size-default: 16px;
 $font-size-large: 32px;
@@ -64,12 +65,20 @@ body {
         padding: 8px;
         flex-grow: 1;
 
+        &--borderless {
+            border: none;
+        }
+
         &--bold {
             font-weight: bold;
         }
 
         &--no-grow {
             flex-grow: 0;
+        }
+
+        &--center {
+            text-align: center;
         }
     }
 
@@ -152,26 +161,30 @@ body {
     }
 }
 
-.bullIcon {
-    display: inline-block;
+.logo {
     text-align: center;
-    font-weight: bold;
-    font-family: 'DM Mono', monospace;
-    font-size: $font-size-xtra-large;
-    height: 76px;
-    width: 76px;
-    border-radius: 100%;
-    background-color: $red;
-    overflow: hidden;
 
-    .horns {
-        position: relative;
-        transform: rotate(90deg);
-        top: -4px;
-    }
-
-    .head {
-        position: relative;
-        top: -48px;
+    .bullIcon {
+        display: block;
+        text-align: center;
+        font-family: 'DM Mono', monospace;
+        font-size: 42px;
+        height: 68px;
+        width: 68px;
+        border-radius: 100%;
+        background-color: $border-color;
+        color: $ticket;
+        overflow: hidden;
+    
+        .horns {
+            position: relative;
+            transform: rotate(90deg);
+            font-weight: bold;
+        }
+    
+        .head {
+            position: relative;
+            top: -42px;
+        }
     }
 }

@@ -4,13 +4,16 @@ import { DATA } from './data.js';
 import { pad, getRandom } from './utils.js';
 import './index.scss';
 
-class BullIcon extends React.Component {
+class Logo extends React.Component {
   render() {
     return (
-      <span class="bullIcon">
-        <div class="horns">}</div>
-        <div class="head">v</div>
-      </span>
+      <div class="logo">
+        <span class="bullIcon">
+          <div class="horns">}</div>
+          <div class="head">v</div>
+        </span>
+      </div>
+      
     )
   }
 }
@@ -107,17 +110,17 @@ class Ticket extends React.Component {
       return (
           <div className="ticket">
             <div className="row">
-            <div className="field field--no-grow">
-                <BullIcon />
-              </div>
-              <div className="field">
-                <Barcode />
-              </div>
-              <div className="field field--bold field--no-grow">
+              <div className="field field--bold field--no-grow field--borderless">
                 <FieldLabel text="Citation No." />
                 <div className="citationNumber">
                   C-{this.getCitationNumber(this.props.id)}
                 </div>
+              </div>
+              <div className="field field--center field--borderless">
+                <Barcode />
+              </div>
+              <div className="field field--no-grow field--borderless">
+                <Logo />
               </div>
             </div>
             <div className="row">
