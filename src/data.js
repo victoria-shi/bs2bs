@@ -10,6 +10,7 @@ export const DATA = [
     },
     {
         title: 'Bean to Bar',
+        name: 'Various',
         address: {}
     },
     {

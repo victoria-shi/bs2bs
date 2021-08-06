@@ -4,6 +4,16 @@ import { DATA } from './data.js';
 import { pad, getRandom } from './utils.js';
 import './index.scss';
 
+class BullIcon extends React.Component {
+  render() {
+    return (
+      <span class="bullIcon">
+        <div class="horns">}</div>
+        <div class="head">v</div>
+      </span>
+    )
+  }
+}
 class Barcode extends React.Component {
   generateStripes() {
     const barcodeWidth = 240;
@@ -89,130 +99,204 @@ class TicketDate extends React.Component {
 }
 
 class Ticket extends React.Component {
-    getCitationNumber(num) {
-      return pad(num, 5);
-    }
+  getCitationNumber(num) {
+    return pad(num, 5);
+  }
 
-    render() {
-        return (
-            <li className="ticket">
-              <div className="row">
-                <div className="field">
-                  <Barcode />
-                </div>
-                <div className="field field--bold field--no-grow">
-                  <FieldLabel text="Citation No." />
-                  <div className="citationNumber">
-                    C-{this.getCitationNumber(this.props.id)}
-                  </div>
+  render() {
+      return (
+          <div className="ticket">
+            <div className="row">
+            <div className="field field--no-grow">
+                <BullIcon />
+              </div>
+              <div className="field">
+                <Barcode />
+              </div>
+              <div className="field field--bold field--no-grow">
+                <FieldLabel text="Citation No." />
+                <div className="citationNumber">
+                  C-{this.getCitationNumber(this.props.id)}
                 </div>
               </div>
-              <div className="row">
-                <div className="field field--bold">
-                  <FieldLabel text="Bullsh*t Citation" />
-                  <div className="offense">
-                    "{this.props.data.title}"
-                  </div>
+            </div>
+            <div className="row">
+              <div className="field field--bold">
+                <FieldLabel text="Bullsh*t Citation" />
+                <div className="offense">
+                  "{this.props.data.title}"
                 </div>
               </div>
-              <div className="row">
-                <div className="field">
-                  <FieldLabel text="Name" />
-                  <div className="name">
-                    {this.props.data.name}
-                  </div>
-                </div>
-                <div className="field">
-                  <TicketDate date={this.props.data.date} />
+            </div>
+            <div className="row">
+              <div className="field">
+                <FieldLabel text="Name" />
+                <div className="name">
+                  {this.props.data.name}
                 </div>
               </div>
-              <div className="row">
-                <TicketAddress address={this.props.data.address} />
+              <div className="field">
+                <TicketDate date={this.props.data.date} />
               </div>
-              <div className="row">
-                <div className="field">
-                <FieldLabel text="Severity"></FieldLabel>
-                  <div>
-                    <input type="radio" id="criminal" name="severity" value="criminal"/>
-                    <label htmlFor="criminal">Criminal violation</label>
-                  </div>
-                  <div>
-                    <input type="radio" id="major-infraction" name="severity" value="major-infraction"/>
-                    <label htmlFor="major-infraction">Infraction (major)</label>
-                  </div>
-                  <div>
-                    <input type="radio" id="minor-infraction" name="severity" value="minor-infraction"/>
-                    <label htmlFor="minor-infraction">Infraction (minor)</label>
-                  </div>
+            </div>
+            <div className="row">
+              <TicketAddress address={this.props.data.address} />
+            </div>
+            <div className="row">
+              <div className="field">
+              <FieldLabel text="Severity"></FieldLabel>
+                <div>
+                  <input type="radio" id="criminal" name="severity" value={0} />
+                  <label htmlFor="criminal">Criminal violation</label>
                 </div>
-                <div className="field">
-                  <FieldLabel text="Penalty Assessed"></FieldLabel>
-                  ${getRandom(100, 10000).toFixed(2)}
+                <div>
+                  <input type="radio" id="major-infraction" name="severity" value={1} />
+                  <label htmlFor="major-infraction">Infraction (major)</label>
+                </div>
+                <div>
+                  <input type="radio" id="minor-infraction" name="severity" value={2} />
+                  <label htmlFor="minor-infraction">Infraction (minor)</label>
                 </div>
               </div>
-              <div className="row">
-                  <div className="field">
-                    <FieldLabel text="Signature"></FieldLabel>
-                    <div className="signature"></div>
-                  </div>
-                  
-                </div>
-            </li>
-        )
+              <div className="field">
+                <FieldLabel text="Penalty Assessed"></FieldLabel>
+                ${getRandom(100, 10000).toFixed(2)}
+              </div>
+            </div>
+            <div className="row">
+              <div className="field">
+                <FieldLabel text="Signature"></FieldLabel>
+                <div className="signature"></div>
+              </div>
+            </div>
+          </div>
+      )
+  }
+}
+
+class TicketLog extends React.Component {
+  formatDate(date) {
+    if (date) {
+      return `${date.getFullYear()}/${pad(date.getMonth() + 1, 2)}/${pad(date.getDate(), 2)}`;
     }
+    
+    return '--';
+  }
+
+  render() {
+    const rows = this.props.tickets.map((ticket, index) => 
+        <tr>
+          <td>{index}</td>
+          <td>{ticket.title}</td>
+          <td>{ticket.name}</td>
+          <td>{this.formatDate(ticket.date)}</td>
+        </tr>
+    );
+
+    return (
+      <div className="log">
+        <table>
+          <tr>
+            <th>#</th>
+            <th>Citation</th>
+            <th>Name</th>
+            <th>Date</th>
+          </tr>
+          {rows}
+        </table>
+      </div>
+    );
+  }
 }
   
-  class BsApp extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        ticketIndex: 0
-      };
+class BsApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ticketIndex: 0,
+      viewLog: false
+    };
 
-      this.prevTicket = this.prevTicket.bind(this);
-      this.nextTicket = this.nextTicket.bind(this);
-    }
+    this.prevTicket = this.prevTicket.bind(this);
+    this.nextTicket = this.nextTicket.bind(this);
+    this.onOpenLog = this.onOpenLog.bind(this);
+    this.onCloseLog = this.onCloseLog.bind(this);
+  }
 
-    prevTicket() {
-      const ticketIndex = this.state.ticketIndex;
+  onOpenLog() {
+    this.setState({ viewLog: true });
+  }
 
-      if (ticketIndex > 0) {
-        this.setState({
-          ticketIndex: ticketIndex - 1
-        });
-      }
-    }
+  onCloseLog() {
+    this.setState({ viewLog: false });
+  }
 
-    nextTicket() {
-      const ticketIndex = this.state.ticketIndex;
+  prevTicket() {
+    const ticketIndex = this.state.ticketIndex;
 
-      if (ticketIndex + 1 < DATA.length) {
-        this.setState({
-          ticketIndex: ticketIndex + 1
-        });
-      }
-    }
-
-    render() {
-      const ticketIndex = this.state.ticketIndex;
-      const ticketData = DATA[ticketIndex];
-
-      return (
-        <div className="app">
-          <div className="app-title">
-            BULLSH*T TO BULLSH*T
-          </div>
-          <div className="tickets">
-            <Ticket data={ticketData} id={ticketIndex} />
-          </div>
-          <div className="navigation">
-            <button className="navigationButton" onClick={this.prevTicket} disabled={ticketIndex === 0}>Previous</button>
-            <button className="navigationButton" onClick={this.nextTicket} disabled={ticketIndex === DATA.length - 1}>Next</button>
-          </div>
-        </div>
-      );
+    if (ticketIndex > 0) {
+      this.setState({
+        ticketIndex: ticketIndex - 1
+      });
     }
   }
+
+  nextTicket() {
+    const ticketIndex = this.state.ticketIndex;
+
+    if (ticketIndex + 1 < DATA.length) {
+      this.setState({
+        ticketIndex: ticketIndex + 1
+      });
+    }
+  }
+
+  renderNav() {
+    let buttons = [];
+    const ticketIndex = this.state.ticketIndex;
+    const isLogOpen = this.state.viewLog;
+
+    if (isLogOpen) {
+      buttons = [
+        <button className="navigationButton" onClick={this.onCloseLog}>Back</button>
+      ];
+    } else {
+      buttons = [
+        <button className="navigationButton" onClick={this.onOpenLog}>Open log</button>,
+        <button className="navigationButton" onClick={this.prevTicket} disabled={ticketIndex === 0} aria-label="Previous ticket">←</button>,
+        <button className="navigationButton" onClick={this.nextTicket} disabled={ticketIndex === DATA.length - 1} aria-label="Next ticket">→</button>
+      ];
+    }
+
+    return (
+      <div className="navigation">
+        {buttons}
+      </div>
+    );
+  }
+
+  render() {
+    const ticketIndex = this.state.ticketIndex;
+    const ticketData = DATA[ticketIndex];
+    const nav = this.renderNav();
+    const isLogOpen = this.state.viewLog;
+    
+    return (
+      <div className="app">
+        <div className="app-title">
+          BULLSH*T TO BULLSH*T
+        </div>
+        {isLogOpen
+          ? <TicketLog tickets={DATA} />
+          : <Ticket data={ticketData} id={ticketIndex} />
+        }
+        <div className="navigation">
+          {nav}
+        </div>
+      </div>
+    );
+  }
+}
   
   // ========================================
   

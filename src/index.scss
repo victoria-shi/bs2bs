@@ -1,5 +1,6 @@
 $ticket: #f2f2f2;
 $ticket-width: 640px;
+$log-max-width: 800px;
 $font-size-small: 12px;
 $font-size-default: 16px;
 $font-size-large: 32px;
@@ -14,7 +15,7 @@ $red-hover: #ab2424;
 
 
 body {
-    font: $font-size-default Arial, sans-serif;
+    font: $font-size-default 'DM Mono', monospace;
 }
 
 .app-title {
@@ -26,10 +27,23 @@ body {
     padding: 8px;
 }
 
-.tickets {
-    list-style: none;
-    margin: 0 auto;
-    padding: 0;
+.log {
+    background-color: $ticket;
+    width: 100%;
+    margin: 16px auto;
+    padding: 16px;
+    max-width: $log-max-width;
+    text-align: center;
+
+    table {
+        width: 100%;
+        border-spacing: 0;
+    }
+
+    td, th {
+        padding: 8px;
+        border: 1px solid $border-color;
+    }
 }
 
 .ticket {
@@ -135,5 +149,29 @@ body {
         background-color: #dedede;
         transition: none;
         cursor: default;
+    }
+}
+
+.bullIcon {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    font-family: 'DM Mono', monospace;
+    font-size: $font-size-xtra-large;
+    height: 76px;
+    width: 76px;
+    border-radius: 100%;
+    background-color: $red;
+    overflow: hidden;
+
+    .horns {
+        position: relative;
+        transform: rotate(90deg);
+        top: -4px;
+    }
+
+    .head {
+        position: relative;
+        top: -48px;
     }
 }
