@@ -211,27 +211,16 @@ class TicketLog extends React.Component {
     );
   }
 }
-  
-class BsApp extends React.Component {
+
+class TicketApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ticketIndex: 0,
-      viewLog: false
+      ticketIndex: 0
     };
 
     this.prevTicket = this.prevTicket.bind(this);
     this.nextTicket = this.nextTicket.bind(this);
-    this.onOpenLog = this.onOpenLog.bind(this);
-    this.onCloseLog = this.onCloseLog.bind(this);
-  }
-
-  onOpenLog() {
-    this.setState({ viewLog: true });
-  }
-
-  onCloseLog() {
-    this.setState({ viewLog: false });
   }
 
   prevTicket() {
@@ -247,41 +236,47 @@ class BsApp extends React.Component {
   nextTicket() {
     const ticketIndex = this.state.ticketIndex;
 
-    if (ticketIndex + 1 < DATA.length) {
+    if (ticketIndex + 1 < this.props.tickets.length) {
       this.setState({
         ticketIndex: ticketIndex + 1
       });
     }
   }
 
-  renderNav() {
-    let buttons = [];
+  render() {
     const ticketIndex = this.state.ticketIndex;
-    const isLogOpen = this.state.viewLog;
-
-    if (isLogOpen) {
-      buttons = [
-        <button className="navigationButton" onClick={this.onCloseLog}>Back</button>
-      ];
-    } else {
-      buttons = [
-        <button className="navigationButton" onClick={this.onOpenLog}>Open log</button>,
-        <button className="navigationButton" onClick={this.prevTicket} disabled={ticketIndex === 0} aria-label="Previous ticket">←</button>,
-        <button className="navigationButton" onClick={this.nextTicket} disabled={ticketIndex === DATA.length - 1} aria-label="Next ticket">→</button>
-      ];
-    }
-
+    const ticketData = this.props.tickets[ticketIndex];
+    
     return (
-      <div className="navigation">
-        {buttons}
+      <div className="tickets">
+        <button className="navigationButton" onClick={this.prevTicket} disabled={ticketIndex === 0} aria-label="Previous ticket">←</button>
+        <Ticket data={ticketData} id={ticketIndex} />
+        <button className="navigationButton" onClick={this.nextTicket} disabled={ticketIndex === this.props.tickets.length - 1} aria-label="Next ticket">→</button>
       </div>
     );
   }
+}
+  
+class BsApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      viewLog: false
+    };
+
+    this.onOpenLog = this.onOpenLog.bind(this);
+    this.onCloseLog = this.onCloseLog.bind(this);
+  }
+
+  onOpenLog() {
+    this.setState({ viewLog: true });
+  }
+
+  onCloseLog() {
+    this.setState({ viewLog: false });
+  }
 
   render() {
-    const ticketIndex = this.state.ticketIndex;
-    const ticketData = DATA[ticketIndex];
-    const nav = this.renderNav();
     const isLogOpen = this.state.viewLog;
     
     return (
@@ -291,10 +286,13 @@ class BsApp extends React.Component {
         </div>
         {isLogOpen
           ? <TicketLog tickets={DATA} />
-          : <Ticket data={ticketData} id={ticketIndex} />
+          : <TicketApp tickets={DATA} />
         }
         <div className="navigation">
-          {nav}
+          {isLogOpen
+            ? <button className="navigationButton" onClick={this.onCloseLog}>Back</button>
+            : <button className="navigationButton" onClick={this.onOpenLog}>Open log</button>
+          }
         </div>
       </div>
     );

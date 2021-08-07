@@ -47,8 +47,15 @@ body {
     }
 }
 
+.tickets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .ticket {
-    margin: 16px auto;
+    flex-grow: 1;
+    margin: 16px;
     padding: 16px;
     background-color: $ticket;
     max-width: $ticket-width;
