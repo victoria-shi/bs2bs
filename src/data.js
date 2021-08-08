@@ -41,5 +41,15 @@ export const DATA = [
             state: 'CA',
             country: 'USA'
         }
+    },
+    {
+        title: 'Farm : Table',
+        name: 'Farm : Table (restaurant)',
+        date: new Date(2021, 7, 7),
+        address: {
+            city: 'San Francisco',
+            state: 'CA',
+            country: 'USA'
+        }
     }
 ];
